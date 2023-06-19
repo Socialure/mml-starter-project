@@ -10,7 +10,7 @@
 >
 </m-audio>
 <m-model
-  src="https://directivecreator.com/grillz/Grillz1.glb" collideable="true" ry="99" rx="0" rz="0" sy="50" sx='50' sz="50" z="-160" x="121" y="15.8" cast-shadows="false">
+  src="https://directivecreator.com/grillz/Grillz1.glb" collideable="true" ry="99" rx="0" rz="0" sy="50" sx='50' sz="50" z="-160" x="121" y="15.8" cast-shadows="false" id="grillzEntrance">
 </m-model>
 <m-model
   src="https://directivecreator.com/grillz/Grillz2.glb" collideable="true" ry="130" rx="0" rz="0" sy="50" sx='50' sz="50" z="-106" x="121" y="15.1" cast-shadows="false">
@@ -98,5 +98,21 @@ function changeColor() {
     colorIndex++;
 }
 setInterval(changeColor, 500); // Change color every half second
+</script>
+<script>
+  const grillzEntrance = document.getElementById("grillzEntrance");
+
+  function jumpUp() {
+    grillzEntrance.setAttribute("y", "17.8"); // jump up by 10
+  }
+
+  function jumpDown() {
+    grillzEntrance.setAttribute("y", "15.8"); // return to original position
+  }
+
+  grillzEntrance.addEventListener("click", () => {
+    jumpUp();
+    setTimeout(jumpDown, 500); // wait half a second before returning to original position
+  });
 </script>
 </html>
