@@ -1,15 +1,121 @@
-<m-light
-    type="directional"
-    x="0"
-    y="15"
-    z="5"
-></m-light>
-
+<html>
+<m-group ry="60" z='-10' y="1.5">
+<m-audio
+    y="3"
+    z="-5"
+    start-time="0"
+    loop="true"
+    src="https://directivecreator.com/dlab/audio/_audio/daft.mp3"
+    volume="4"
+>
+</m-audio>
 <m-model
-  src="https://directivecreator.com/grillz/Grillz1.glb"
-  sx="50"
-  sy="50"
-  sz="50"
-  y="5"
-  ry="-90"
-></m-model>
+  src="https://directivecreator.com/grillz/Grillz1.glb" collideable="true" ry="99" rx="0" rz="0" sy="50" sx='50' sz="50" z="-160" x="121" y="15.8" cast-shadows="false">
+</m-model>
+<m-model
+  src="https://directivecreator.com/grillz/Grillz2.glb" collideable="true" ry="130" rx="0" rz="0" sy="50" sx='50' sz="50" z="-106" x="121" y="15.1" cast-shadows="false">
+</m-model>
+<m-model
+  src="https://directivecreator.com/grillz/Grillz1.glb" ry="60" rx="0" rz="-30" sy="130" sx='130' sz="130" z="5" x="1" y="60" cast-shadows="false">
+</m-model>
+<m-model
+  src="https://directivecreator.com/grillz/mml/disco.glb" id="disco" ry="160" rx="0" rz="0" sy="1" sx='1' sz="1" z="5" x="1" y="30" cast-shadows="false">
+</m-model>
+<m-model
+  src="https://directivecreator.com/grillz/mml/daft.glb" collide="true" ry="160" collide="true" sy="0.02" sx='0.02' sz="0.02" z="10" x="1" y="0.24" cast-shadows="false">
+</m-model>
+<m-cube
+    color="black"
+    y="0"
+    x="4"
+    collideable="true"
+    sy="0.5"
+    sx="40"
+    sz="20"
+    ry="160"
+></m-cube>
+<m-cube
+    color="black"
+    y="0.5"
+    x="1.8"
+    z="7.5"
+    collideable="true"
+    sy="2"
+    sx="3"
+    sz="2"
+    ry="160"
+></m-cube>
+<m-light
+    id="light1"
+    type="directional"
+    ry="1"
+    rx="1"
+    rz="1"
+    x="10"
+    y="4"
+    z="5"
+    color="red"
+></m-light>
+<m-light
+    id="light2"
+    type="directional"
+    ry="1"
+    rx="1"
+    rz="1"
+    x="-5"
+    y="3"
+    z="5"
+    color="green"
+></m-light>
+<m-light
+    id="light3"
+    type="directional"
+    ry="1"
+    rx="1"
+    rz="1"
+    x="5"
+    y="4"
+    z="5"
+    color="purple"
+></m-light>
+</m-group>
+<script>
+  const globe = document.getElementById("globe");
+  if (globe) {
+    setInterval(() => {
+      globe.setAttribute("ry", (new Date().getTime() / 100) % 360);
+    }, 30);
+  }
+</script>
+<script>
+  const duck = document.getElementById("disco");
+  if (disco) {
+    setInterval(() => {
+      disco.setAttribute("ry", (new Date().getTime() / 100) % 360);
+    }, 30);
+  }
+</script>
+<script>
+let colorIndex = 0;
+const colors = ["red", "green", "blue", "yellow", "purple", "orange", "pink"]; // Add more colors if needed
+function changeColor() {
+    const lights = document.querySelectorAll('m-light');
+    lights.forEach((light, index) => {
+        light.setAttribute('color', colors[(colorIndex + index) % colors.length]);
+    });
+    colorIndex++;
+}
+setInterval(changeColor, 500); // Change ctolor every second
+let rotationValue = 0;
+function rotateLights() {
+    const lights = document.querySelectorAll('m-light');
+    lights.forEach(light => {
+        light.setAttribute('ry', rotationValue);
+        light.setAttribute('rx', rotationValue);
+        light.setAttribute('rz', rotationValue);
+    });
+    rotationValue += 1; // This value controls the speed of rotation
+}
+setInterval(rotateLights, 100); // Rotate lights every 100ms
+</script>
+</html>
