@@ -80,15 +80,7 @@
 ></m-light>
 </m-group>
 <script>
-  const globe = document.getElementById("globe");
-  if (globe) {
-    setInterval(() => {
-      globe.setAttribute("ry", (new Date().getTime() / 100) % 360);
-    }, 30);
-  }
-</script>
-<script>
-  const duck = document.getElementById("disco");
+  const disco = document.getElementById("disco");
   if (disco) {
     setInterval(() => {
       disco.setAttribute("ry", (new Date().getTime() / 100) % 360);
@@ -105,17 +97,6 @@ function changeColor() {
     });
     colorIndex++;
 }
-setInterval(changeColor, 500); // Change ctolor every second
-let rotationValue = 0;
-function rotateLights() {
-    const lights = document.querySelectorAll('m-light');
-    lights.forEach(light => {
-        light.setAttribute('ry', rotationValue);
-        light.setAttribute('rx', rotationValue);
-        light.setAttribute('rz', rotationValue);
-    });
-    rotationValue += 1; // This value controls the speed of rotation
-}
-setInterval(rotateLights, 100); // Rotate lights every 100ms
+setInterval(changeColor, 500); // Change color every half second
 </script>
 </html>
