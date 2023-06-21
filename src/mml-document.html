@@ -1,121 +1,110 @@
-<html>
-<m-group ry="60" z='-10' y="1.5">
-<m-audio
-    y="3"
-    z="-5"
-    start-time="0"
-    loop="true"
-    src="https://directivecreator.com/dlab/audio/_audio/daft.mp3"
-    volume="4"
->
-</m-audio>
-<m-model
-  src="https://directivecreator.com/grillz/Grillz1.glb" collideable="true" ry="99" rx="0" rz="0" sy="50" sx='50' sz="50" z="-160" x="121" y="15.8" cast-shadows="false">
-</m-model>
-<m-model
-  src="https://directivecreator.com/grillz/Grillz2.glb" collideable="true" ry="130" rx="0" rz="0" sy="50" sx='50' sz="50" z="-106" x="121" y="15.1" cast-shadows="false">
-</m-model>
-<m-model
-  src="https://directivecreator.com/grillz/Grillz1.glb" ry="60" rx="0" rz="-30" sy="130" sx='130' sz="130" z="5" x="1" y="60" cast-shadows="false">
-</m-model>
-<m-model
-  src="https://directivecreator.com/grillz/mml/disco.glb" id="disco" ry="160" rx="0" rz="0" sy="1" sx='1' sz="1" z="5" x="1" y="30" cast-shadows="false">
-</m-model>
-<m-model
-  src="https://directivecreator.com/grillz/mml/daft.glb" collide="true" ry="160" collide="true" sy="0.02" sx='0.02' sz="0.02" z="10" x="1" y="0.24" cast-shadows="false">
-</m-model>
-<m-cube
-    color="black"
-    y="0"
-    x="4"
-    collideable="true"
-    sy="0.5"
-    sx="40"
-    sz="20"
-    ry="160"
-></m-cube>
-<m-cube
-    color="black"
-    y="0.5"
-    x="1.8"
-    z="7.5"
-    collideable="true"
-    sy="2"
-    sx="3"
-    sz="2"
-    ry="160"
-></m-cube>
-<m-light
-    id="light1"
-    type="directional"
-    ry="1"
-    rx="1"
-    rz="1"
-    x="10"
-    y="4"
-    z="5"
-    color="red"
-></m-light>
-<m-light
-    id="light2"
-    type="directional"
-    ry="1"
-    rx="1"
-    rz="1"
-    x="-5"
-    y="3"
-    z="5"
-    color="green"
-></m-light>
-<m-light
-    id="light3"
-    type="directional"
-    ry="1"
-    rx="1"
-    rz="1"
-    x="5"
-    y="4"
-    z="5"
-    color="purple"
-></m-light>
+<m-group ry="90" sx="1" sy="1" sz="1" y="0" cast-shadows="false">
+
+  <m-prompt id="prompt1" message="Enter Grillz ID for Board 1" placeholder="Token ID">
+    <m-image id="Board1"
+        y="13.4"
+        x="0.7"
+        z="2.72"
+        ry="90"
+        height="4.5"
+        width="4.5"
+    ></m-image>
+  </m-prompt>
+
+  <m-prompt id="prompt2" message="Enter Grillz ID for Board 2" placeholder="Token ID">
+    <m-image id="Board2"
+        y="13.4"
+        x="0.7"
+        z="-2.72"
+        ry="90"
+        height="4.5"
+        width="4.5"
+    ></m-image>
+  </m-prompt>
+
+  <m-prompt id="prompt3" message="Enter Grillz ID for Board 3" placeholder="Token ID">
+    <m-image id="Board3"
+        y="13.4"
+        x="-0.7"
+        z="2.72"
+        ry="-90"
+        height="4.5"
+        width="4.5"
+    ></m-image>
+  </m-prompt>
+
+  <m-prompt id="prompt4" message="Enter Grillz ID for Board 4" placeholder="Token ID">
+    <m-image id="Board4"
+        y="13.4"
+        x="-0.7"
+        z="-2.72"
+        ry="-90"
+        height="4.5"
+        width="4.5"
+    ></m-image>
+  </m-prompt>
+
+  <m-model ry="-90" cast-shadows="false" src="https://directivecreator.com/grillz/mml/grillzboard.glb"></m-model>
+
 </m-group>
+
 <script>
-  const globe = document.getElementById("globe");
-  if (globe) {
-    setInterval(() => {
-      globe.setAttribute("ry", (new Date().getTime() / 100) % 360);
-    }, 30);
-  }
-</script>
-<script>
-  const duck = document.getElementById("disco");
-  if (disco) {
-    setInterval(() => {
-      disco.setAttribute("ry", (new Date().getTime() / 100) % 360);
-    }, 30);
-  }
-</script>
-<script>
-let colorIndex = 0;
-const colors = ["red", "green", "blue", "yellow", "purple", "orange", "pink"]; // Add more colors if needed
-function changeColor() {
-    const lights = document.querySelectorAll('m-light');
-    lights.forEach((light, index) => {
-        light.setAttribute('color', colors[(colorIndex + index) % colors.length]);
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const boardIds = ["Board1", "Board2", "Board3", "Board4"];
+    const prompts = boardIds.map((_, i) => document.getElementById(`prompt${i + 1}`));
+    let imageCounters = [1, 1000, 2000, 3000];
+    let autoUpdateFlags = [true, true, true, true];
+
+    function fetchImageURL(id, callback) {
+      const url = `https://ipfs.io/ipfs/Qmer3VzaeFhb7c5uiwuHJbRuVCaUu72DcnSoUKb1EvnB2x/${id}`;
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", url, true);
+      xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          const metadata = JSON.parse(xhr.responseText);
+          callback(metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/"));
+        }
+      }
+      xhr.send();
+    }
+
+    function handlePrompt(e) {
+      const id = e.detail.value;
+      const index = prompts.findIndex(prompt => prompt === e.target);
+
+      fetchImageURL(id, imageURL => {
+        if (index !== -1) {
+          const board = document.getElementById(boardIds[index]);
+          board.setAttribute("src", imageURL);
+          autoUpdateFlags[index] = false;  // Turn off automatic updates for this board
+        }
+      });
+    }
+
+    prompts.forEach(prompt => prompt.addEventListener("prompt", handlePrompt));
+
+    // Load initial images
+    imageCounters.forEach((id, i) => {
+      fetchImageURL(id, imageURL => {
+        const board = document.getElementById(boardIds[i]);
+        board.setAttribute("src", imageURL);
+      });
     });
-    colorIndex++;
-}
-setInterval(changeColor, 500); // Change ctolor every second
-let rotationValue = 0;
-function rotateLights() {
-    const lights = document.querySelectorAll('m-light');
-    lights.forEach(light => {
-        light.setAttribute('ry', rotationValue);
-        light.setAttribute('rx', rotationValue);
-        light.setAttribute('rz', rotationValue);
+
+    // Update images every 5 seconds for each board, if auto-update is still enabled
+    boardIds.forEach((boardId, i) => {
+      setInterval(() => {
+        if (autoUpdateFlags[i]) {  // Only update if auto-update is enabled
+          imageCounters[i] = (imageCounters[i] % 5555) + 1;
+          fetchImageURL(imageCounters[i], imageURL => {
+            const board = document.getElementById(boardId);
+            board.setAttribute("src", imageURL);
+          });
+        }
+      }, (i+1) * 5000);
     });
-    rotationValue += 1; // This value controls the speed of rotation
-}
-setInterval(rotateLights, 100); // Rotate lights every 100ms
+  });
 </script>
-</html>
+
+
+
