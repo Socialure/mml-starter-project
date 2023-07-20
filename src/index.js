@@ -5,7 +5,7 @@ const chokidar = require("chokidar");
 const express = require("express");
 const enableWs = require("express-ws");
 
-const { LocalObservableDomFactory, EditableNetworkedDOM } = require("networked-dom-server");
+const { LocalObservableDOMFactory, EditableNetworkedDOM } = require("networked-dom-server");
 
 // Set up server port
 const port = process.env.PORT || 8080;
@@ -19,15 +19,17 @@ const getDomFileContents = () => fs.readFileSync(filePath, "utf8");
 // Function to get WebSocket URL
 const getWebsocketUrl = (req) =>
   `${req.secure ? "wss" : "ws"}://${
-    req.headers["x-forwarded-host"]
-      ? `${req.headers["x-forwarded-host"]}:${req.headers["x-forwarded-port"]}`
+    req.headers["x-forwarded-host"] && req.headers["x-forwarded-port"]
+      ? `${req.headers["x-forwarded-host"]}:${req.headers["x-forwarded-port"].split(",")[0]}` // In case of Glitch hosting. See comment below.
       : req.headers.host
   }`;
+
+// x-forwarded-port is not standardized, and it could either be a port or a comma separated list of ports depending on the hosting platform
 
 // Initialize EditableNetworkedDOM
 const document = new EditableNetworkedDOM(
   url.pathToFileURL(filePath).toString(),
-  LocalObservableDomFactory,
+  LocalObservableDOMFactory,
 );
 document.load(getDomFileContents());
 
